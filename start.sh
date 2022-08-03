@@ -1,0 +1,1 @@
+docker stop ocr;docker rm ocr;docker rmi ocr/jay;docker build -t ocr/jay .;docker run --name ocr -p 80:80 -v ${PWD}:/app -d ocr/jay
