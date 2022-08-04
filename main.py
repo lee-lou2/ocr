@@ -1,5 +1,6 @@
 import os
 import threading
+import time
 from typing import Union
 
 import requests
@@ -32,6 +33,7 @@ class RequestBody(BaseModel):
 
 
 def _check_ocr(data: RequestBody):
+    start = time.time()
     url = data.url
     name = data.name
     number = data.number
@@ -72,7 +74,7 @@ def _check_ocr(data: RequestBody):
     )
 
     # 결과 값 조회
-    response = {"is_matched": {}, "text": text}
+    response = {"is_matched": {}, "text": text, "seconds": time.time() - start}
     if name:
         response["is_matched"]["name"] = name in text
     if number:
