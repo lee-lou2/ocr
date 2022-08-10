@@ -1,3 +1,4 @@
+import logging
 import os
 import threading
 import time
@@ -82,7 +83,10 @@ def _check_ocr(data: RequestBody):
 
     # 결과 콜백
     if call_back:
-        requests.post(call_back, json=response)
+        try:
+            requests.post(call_back, json=response)
+        except Exception as ex:
+            logging.error("콜백 호출간 오류 발생 : ", ex)
     return response
 
 
@@ -98,7 +102,10 @@ class T(threading.Thread):
         self.data = data
 
     def run(self) -> None:
-        _check_ocr(self.data)
+        try:
+            _check_ocr(self.data)
+        except Exception as ex:
+            logging.error("비동기 호출간 오류 발생 : ", ex)
 
 
 @app.post("/v1/ocr/check/async/")
